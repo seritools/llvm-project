@@ -44,6 +44,17 @@ def FeatureReserveEDI : SubtargetFeature<"reserve-edi", "ReservedRReg[X86::EDI]"
 def FeatureX87     : SubtargetFeature<"x87","HasX87", "true",
                                       "Enable X87 float instructions">;
 
+// x87 instructions round to the precision selected by the FPU control word,
+// not to the type of the value they produce, so an f32/f64 result is normally
+// rounded back to its own type through memory. This lets that extra precision
+// escape instead, which is faster but means an f32/f64 in a register does not
+// hold a value of its type.
+def FeatureX87ExcessPrecision
+    : SubtargetFeature<"x87-excess-precision", "AllowX87ExcessPrecision",
+                       "true",
+                       "Let x87 f32/f64 results keep the register's extended "
+                       "precision instead of rounding to their type">;
+
 // Does not have intrinsics or ABI effects.
 def FeatureNOPL    : SubtargetFeature<"nopl", "HasNOPL", "true",
                                       "Enable NOPL instruction (generally pentium pro+)",

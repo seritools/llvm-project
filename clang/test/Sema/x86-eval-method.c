@@ -1,6 +1,13 @@
 // RUN: %clang_cc1 -fexperimental-strict-floating-point \
 // RUN: -triple i386-pc-windows -target-cpu pentium4 -target-feature -sse \
+// RUN: -target-feature +x87-excess-precision \
 // RUN: -emit-llvm -ffp-eval-method=source  -o - -verify=warn %s
+//
+// Without +x87-excess-precision the backend rounds every x87 result to its
+// type, which is what `source` asks for, so there is nothing to warn about.
+// RUN: %clang_cc1 -fexperimental-strict-floating-point \
+// RUN: -triple i386-pc-windows -target-cpu pentium4 -target-feature -sse \
+// RUN: -emit-llvm -ffp-eval-method=source  -o - -verify=no-warn %s
 //
 // RUN: %clang_cc1 -fexperimental-strict-floating-point \
 // RUN: -triple i386-pc-windows -target-cpu pentium4 \

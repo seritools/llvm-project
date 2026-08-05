@@ -183,6 +183,15 @@ features cannot lower the translation-unit ABI level;
 ### Modified Compiler Flags
 
 - All options of the `-fzero-call-used-regs` compiler flag are now allowed on RISC-V.
+- `-fexcess-precision=fast` is no longer an alias for `standard`. On x86
+  without SSE it now does what it says: x87 `float`/`double` results keep the
+  register's extended precision instead of being rounded to their type, and
+  `__FLT_EVAL_METHOD__` becomes `2` rather than `0`. It has no effect on other
+  targets. GCC's `-fexcess-precision=standard` evaluation model remains
+  available as `-ffp-eval-method=extended`.
+- `-ffp-eval-method=source` and `#pragma clang fp eval_method(source)` are now
+  accepted on x86 without SSE, where they used to be rejected because the
+  backend could not round x87 results to their type.
 
 ### Removed Compiler Flags
 
@@ -516,6 +525,15 @@ features cannot lower the translation-unit ABI level;
 ### DWARF Support in Clang
 
 ### Floating Point Support in Clang
+
+- Fixed x87 code (x86 without SSE) keeping the extended precision of an
+  intermediate result in a `float` or `double` value, so that a value could
+  compare unequal to itself depending on whether the register allocator had
+  spilled it. Every x87 `float`/`double` result is now rounded to its own type,
+  which is what the documentation already claimed. `-fexcess-precision=fast`
+  opts back out.
+- `__FLT_EVAL_METHOD__` is now `0` rather than `2` on x86 without SSE, matching
+  the fact that Clang rounds every intermediate result to its type there.
 
 ### Fixed Point Support in Clang
 
