@@ -56,6 +56,18 @@ X86LegalizerInfo::X86LegalizerInfo(const X86Subtarget &STI,
   const LLT s32 = LLT::scalar(32);
   const LLT s64 = LLT::scalar(64);
   const LLT s80 = LLT::scalar(80);
+
+  // x87 arithmetic does not round its result to s32/s64 (see
+  // X86TargetLowering::needsX87RoundToType), so those have to be widened to
+  // s80 and rounded back down by the G_FPTRUNC, which does go through memory.
+  const X86TargetLowering &TLI = *Subtarget.getTargetLowering();
+  bool RoundX87f32 = TLI.needsX87RoundToType(MVT::f32);
+  bool RoundX87f64 = TLI.needsX87RoundToType(MVT::f64);
+  auto WidenX87ToS80 = [=](const LegalityQuery &Query) {
+    return (RoundX87f32 && Query.Types[0] == s32) ||
+           (RoundX87f64 && Query.Types[0] == s64);
+  };
+  auto ToS80 = [=](const LegalityQuery &) { return std::pair(0u, s80); };
   const LLT s128 = LLT::scalar(128);
   const LLT sMaxScalar = Subtarget.is64Bit() ? s64 : s32;
   const LLT v2s32 = LLT::fixed_vector(2, 32);
@@ -135,9 +147,10 @@ X86LegalizerInfo::X86LegalizerInfo(const X86Subtarget &STI,
       .lower();
 
   getActionDefinitionsBuilder(G_FSQRT)
-      .legalFor(HasSSE1 || UseX87, {s32})
-      .legalFor(HasSSE2 || UseX87, {s64})
-      .legalFor(UseX87, {s80});
+      .legalFor(HasSSE1, {s32})
+      .legalFor(HasSSE2, {s64})
+      .widenScalarIf(WidenX87ToS80, ToS80)
+      .legalFor(UseX87, {s32, s64, s80});
 
   getActionDefinitionsBuilder({G_GET_ROUNDING, G_SET_ROUNDING})
       .customFor({s32});
@@ -438,6 +451,7 @@ X86LegalizerInfo::X86LegalizerInfo(const X86Subtarget &STI,
 
   // fp arithmetic
   getActionDefinitionsBuilder({G_FADD, G_FSUB, G_FMUL, G_FDIV})
+      .widenScalarIf(WidenX87ToS80, ToS80)
       .legalFor({s32, s64})
       .legalFor(HasSSE1, {v4s32})
       .legalFor(HasSSE2, {v2s64})
