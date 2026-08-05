@@ -81,8 +81,9 @@ static cl::opt<bool> X87RoundToType(
     "x86-x87-round-to-type", cl::init(true),
     cl::desc("Round the result of every x87 f32/f64 operation to its type "
              "instead of leaving it at the register's extended precision. "
-             "Costs a store/load round-trip per operation; turning this off "
-             "restores the historical, faster, incorrect behaviour."),
+             "Costs a store/load round-trip per operation. Turning this off "
+             "restores the historical, faster, incorrect behaviour; the "
+             "per-function spelling of that is +x87-excess-precision."),
     cl::Hidden);
 
 static cl::opt<int> BrMergingBaseCostThresh(
@@ -3715,8 +3716,8 @@ bool X86TargetLowering::isScalarFPTypeInX87Reg(EVT VT) const {
 }
 
 bool X86TargetLowering::needsX87RoundToType(EVT VT) const {
-  return X87RoundToType && (VT == MVT::f32 || VT == MVT::f64) &&
-         isScalarFPTypeInX87Reg(VT);
+  return X87RoundToType && !Subtarget.allowX87ExcessPrecision() &&
+         (VT == MVT::f32 || VT == MVT::f64) && isScalarFPTypeInX87Reg(VT);
 }
 
 bool X86TargetLowering::isLoadBitCastBeneficial(EVT LoadVT, EVT BitcastVT,

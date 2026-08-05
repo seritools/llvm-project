@@ -1,6 +1,13 @@
 // RUN: %clang_cc1 -fexperimental-strict-floating-point \
-// RUN: -triple x86_64-linux-gnu -target-feature -sse -emit-llvm \
+// RUN: -triple x86_64-linux-gnu -target-feature -sse \
+// RUN: -target-feature +x87-excess-precision -emit-llvm \
 // RUN: -o - -verify=warn %s
+//
+// Without +x87-excess-precision the backend rounds every x87 result to its
+// type, which is what `source` asks for, so there is nothing to warn about.
+// RUN: %clang_cc1 -fexperimental-strict-floating-point \
+// RUN: -triple x86_64-linux-gnu -target-feature -sse -emit-llvm \
+// RUN: -o - -verify=no-warn %s
 //
 // RUN: %clang_cc1 -fexperimental-strict-floating-point \
 // RUN: -triple x86_64-linux-gnu -emit-llvm -o - -verify=no-warn %s

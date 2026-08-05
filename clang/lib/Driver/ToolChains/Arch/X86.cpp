@@ -229,6 +229,12 @@ void x86::getX86TargetFeatures(const Driver &D, const llvm::Triple &Triple,
         << D.getOpts().getOptionName(LVIOpt);
   }
 
+  // -fexcess-precision=fast lets x87 f32/f64 results keep the register's
+  // extended precision. "standard", the default, rounds them to their type.
+  if (Arg *A = Args.getLastArg(options::OPT_fexcess_precision_EQ))
+    if (StringRef(A->getValue()) == "fast")
+      Features.push_back("+x87-excess-precision");
+
   enum class EGPRFeature { Unknown, Disabled, Enabled };
   EGPRFeature EGPROpt = EGPRFeature::Unknown;
   // Now add any that the user explicitly requested on the command line,

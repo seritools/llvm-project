@@ -2089,7 +2089,11 @@ builtins.
 Clang does not use excess precision arithmetic for most types or on most
 targets. For example, even on pre-SSE X86 targets where `float` and
 `double` computations must be performed in the 80-bit X87 format, Clang
-rounds all intermediate results correctly for their type.  Clang currently
+rounds all intermediate results correctly for their type.  On those targets
+that costs a store/load round-trip per operation, since an X87 register is
+always 80 bits wide and the X87 instructions round to the precision selected
+by the FPU control word rather than to the type of the value; see
+`-fexcess-precision=fast` below to trade that away.  Clang currently
 uses excess precision arithmetic by default only for the following types and
 targets:
 
@@ -2101,10 +2105,21 @@ excess precision arithmetic.  Valid values are:
 * `standard` - The default.  Allow the use of excess precision arithmetic
   under the constraints of the C and C++ standards. Has no effect except on
   the types and targets listed above.
-* `fast` - Accepted for GCC compatibility, but currently treated as an
-  alias for `standard`.
+* `fast` - Allow excess precision to escape an expression, at the cost of
+  reproducibility.  On pre-SSE X86 this drops the rounding described above,
+  so a `float` or `double` in an X87 register may hold a value that is not
+  representable in its type, and results can change depending on whether the
+  register allocator happened to spill it.  `__FLT_EVAL_METHOD__` becomes
+  `2` rather than `0`.  Has no effect on other targets.
 * `16` - Forces `_Float16` operations to be emitted without using excess
   precision arithmetic.
+
+Note that GCC spells the X87 evaluation model differently: its
+`-fexcess-precision=standard` evaluates in the 80-bit format and rounds at
+the assignments and casts ISO C requires, reporting `__FLT_EVAL_METHOD__` as
+`2`.  Both that and Clang's default are conforming; Clang exposes GCC's model
+as `-ffp-eval-method=extended`, which is faster than the default on pre-SSE
+X86 because it rounds once per assignment instead of once per operation.
 :::
 
 :::{option} -fcomplex-arithmetic=<value>:
