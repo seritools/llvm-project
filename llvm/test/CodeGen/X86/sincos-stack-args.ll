@@ -21,6 +21,8 @@ define double @negative_sincos_with_stores_within_call_sequence(double %a) nounw
 ; CHECK-NEXT:    fldl 32(%esp)
 ; CHECK-NEXT:    fldl 24(%esp)
 ; CHECK-NEXT:    faddl {{\.?LCPI[0-9]+_[0-9]+}}
+; CHECK-NEXT:    fstpl 16(%esp)
+; CHECK-NEXT:    fldl 16(%esp)
 ; CHECK-NEXT:    fxch %st(1)
 ; CHECK-NEXT:    fstpl 8(%esp)
 ; CHECK-NEXT:    fstpl (%esp)

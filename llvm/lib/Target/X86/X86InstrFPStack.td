@@ -721,8 +721,11 @@ def : Pat<(f80 (any_fpextend RFP64:$src)), (COPY_TO_REGCLASS RFP64:$src, RFP80)>
            Requires<[FPStackf64]>;
 
 // FP truncations map onto simple pseudo-value conversions if they are to/from
-// the FP stack.  We have validated that only value-preserving truncations make
-// it through isel.
+// the FP stack.  This drops the rounding: the register is 80 bits wide either
+// way, so nothing narrows the value.  X86TargetLowering::LowerFP_ROUND takes
+// these truncations over and expands them to a store/load through a stack slot
+// of the destination width, leaving these patterns reachable only with
+// -x86-x87-round-to-type=false.
 def : Pat<(f32 (any_fpround RFP64:$src)), (COPY_TO_REGCLASS RFP64:$src, RFP32)>,
           Requires<[FPStackf32]>;
 def : Pat<(f32 (any_fpround RFP80:$src)), (COPY_TO_REGCLASS RFP80:$src, RFP32)>,

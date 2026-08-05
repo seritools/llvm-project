@@ -561,6 +561,15 @@ namespace llvm {
     /// register, not on the X87 floating point stack.
     bool isScalarFPTypeInSSEReg(EVT VT) const;
 
+    /// Return true if \p VT is a scalar FP type held on the X87 stack, where
+    /// the register is always 80 bits wide regardless of \p VT.
+    bool isScalarFPTypeInX87Reg(EVT VT) const;
+
+    /// Return true if results of x87 operations on \p VT must be rounded back
+    /// to \p VT (via memory) instead of being left at the register's extended
+    /// precision. Only ever true for f32/f64 on the X87 stack.
+    bool needsX87RoundToType(EVT VT) const;
+
     /// Returns true if it is beneficial to convert a load of a constant
     /// to just the constant itself.
     bool shouldConvertConstantLoadToIntImm(const APInt &Imm,
@@ -655,6 +664,14 @@ namespace llvm {
     /// offset as appropriate.
     Value *getSafeStackPointerLocation(
         IRBuilderBase &IRB, const LibcallLoweringInfo &Libcalls) const override;
+
+    /// Round the x87 value \p Src to \p VT by storing it to a stack slot of
+    /// that width and reloading it. x87 registers are 80 bits wide whatever
+    /// type they hold, so this store/load pair is the only way to force a
+    /// value to its nominal type. Returns {value, chain}.
+    std::pair<SDValue, SDValue> RoundX87ToType(EVT VT, const SDLoc &DL,
+                                               SDValue Chain, SDValue Src,
+                                               SelectionDAG &DAG) const;
 
     std::pair<SDValue, SDValue> BuildFILD(EVT DstVT, EVT SrcVT, const SDLoc &DL,
                                           SDValue Chain, SDValue Pointer,
