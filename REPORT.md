@@ -238,10 +238,55 @@ becomes worthwhile as a *separate* change — with a correct backend it buys bac
 (fewer rounding points: one per assignment rather than one per operation) rather than being needed
 for correctness.
 
-## 6. Suggested test coverage
+## 6. What was implemented
 
-- `llvm/test/CodeGen/X86/` regression showing `fadd float` under `-mattr=-sse` emitting a
-  round-through-memory, in both the "result also stored" and "result only used in a register" shapes.
-- The `fptrunc x86_fp80 -> float` / `-> double` cases, which currently select to nothing.
-- Spill/no-spill pair, to pin down that the value is the same either way.
-- An execution test (`clang/test/CodeGen` or a `test-suite` entry) of the program above.
+Option A, in two commits.
+
+**`[X86] Round x87 f32/f64 results back to their own type`**
+
+- `X86ISelLowering.cpp`: `FADD`/`FSUB`/`FMUL`/`FDIV`/`FSQRT` and their `STRICT_` forms on
+  `f32`/`f64` are `setOperationPromotedToType(..., MVT::f80)` whenever the type lives on the x87
+  stack. LegalizeDAG's `PromoteNode` already expands those to `fp_round(op(fp_extend, fp_extend))`.
+- `LowerFP_ROUND` handles a narrowing `FP_ROUND` between two x87 types by storing to a stack slot of
+  the destination width (`X86ISD::FST`) and reloading, instead of letting isel pick the
+  `COPY_TO_REGCLASS` from §4b. Factored into `X86TargetLowering::RoundX87ToType`, which also replaces
+  the open-coded copy of the same sequence in `BuildFILD`.
+- `BuildFILD` builds the `FILD` as `f80` and rounds, since `FILD` also rounds to the control word's
+  precision rather than to the destination type.
+- Two peepholes keep the common cases free: `LowerFP_ROUND` returns the node unchanged when every
+  user is a store of exactly that width (the store's `FST` *is* the rounding step), and
+  `combineStore` folds `store (fp_round X)` to a truncating store. `float x = a+b; *p = x;` is
+  therefore still `fadds; fstps (%eax)`, identical to before.
+
+**`[X86][GlobalISel] Widen x87 f32/f64 arithmetic to s80`**
+
+- `X86LegalizerInfo`: the same ops on `s32`/`s64` are widened to `s80` when they'd land on x87.
+  `LegalizerHelper::widenScalar` uses `G_FPEXT`/`G_FPTRUNC` for these opcodes, and X86 already
+  lowers `G_FPTRUNC` from `s80` through memory. Without this GlobalISel kept miscompiling `float`
+  (it was already falling back to SelectionDAG for `double`).
+
+**The toggle.** `-x86-x87-round-to-type` (hidden, default on). With `=false` the whole X86 codegen
+test suite passes unmodified against the pre-change checked-in expectations, i.e. the opt-out is
+byte-for-byte the historical behaviour. A subtarget feature would be the more idiomatic user-facing
+spelling; this is the backend-internal equivalent and the thing to build one on top of.
+
+**Verified.** All 64784 `llvm/test` tests pass. Executing the program from the top of this report on
+the generated code returns 0 with the flag on and 127 with it off. 35 X86 codegen tests changed and
+were regenerated; the sole hand-edit is `GlobalISel/sqrt.mir`, whose hand-written pre-legalized MIR
+only reaches `SQRT_Fp32`/`SQRT_Fp64` under the opt-out and now passes the flag.
+
+**Not done.** `clang` was not built here, so clang's own tests were not run. Wiring
+`-fexcess-precision=standard` to `FEM_Extended` on non-SSE x86 (§5, Option C) is now worth doing as a
+follow-up, as a performance improvement rather than a correctness fix — it moves the rounding points
+from every operation to every assignment.
+
+## 7. Suggested test coverage
+
+`llvm/test/CodeGen/X86/x87-round-to-type.ll` covers, under both settings of the flag: the original
+compare-against-reload shape, `fadd`/`fmul`/`fdiv`/`fsqrt` results left in a register, results only
+stored (must not gain a round-trip), results both stored and used, `fptrunc` from `x86_fp80` to
+`float`/`double`, `fptrunc double -> float`, `sitofp`, and a value live across a call (so it is
+spilled to a 4-byte slot).
+
+Still missing: an execution test (`clang/test/CodeGen` or a `test-suite` entry) of the program at
+the top of this report.
