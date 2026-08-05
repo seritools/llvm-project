@@ -77,6 +77,14 @@ static cl::opt<int> ExperimentalPrefInnermostLoopAlignment(
         "alignment set by x86-experimental-pref-loop-alignment."),
     cl::Hidden);
 
+static cl::opt<bool> X87RoundToType(
+    "x86-x87-round-to-type", cl::init(true),
+    cl::desc("Round the result of every x87 f32/f64 operation to its type "
+             "instead of leaving it at the register's extended precision. "
+             "Costs a store/load round-trip per operation; turning this off "
+             "restores the historical, faster, incorrect behaviour."),
+    cl::Hidden);
+
 static cl::opt<int> BrMergingBaseCostThresh(
     "x86-br-merging-base-cost", cl::init(2),
     cl::desc(
@@ -897,6 +905,24 @@ X86TargetLowering::X86TargetLowering(const X86TargetMachine &TM,
     // FIXME: When the target is 64-bit, STRICT_FP_ROUND will be overwritten
     // as Custom.
     setOperationAction(ISD::STRICT_FP_ROUND, MVT::f80, Legal);
+  }
+
+  // The x87 instructions round to whatever precision the FPU control word
+  // selects, not to the type of the value they nominally produce, so an f32 or
+  // f64 held on the x87 stack does not in general contain a value of its own
+  // type. Restore that invariant by doing the arithmetic at the register's own
+  // precision and rounding the result back to the narrow type, which
+  // LowerFP_ROUND turns into a store/load through a stack slot.
+  for (auto VT : {MVT::f32, MVT::f64}) {
+    if (!needsX87RoundToType(VT))
+      continue;
+    for (unsigned Opc :
+         {ISD::FADD, ISD::FSUB, ISD::FMUL, ISD::FDIV, ISD::FSQRT,
+          ISD::STRICT_FADD, ISD::STRICT_FSUB, ISD::STRICT_FMUL,
+          ISD::STRICT_FDIV, ISD::STRICT_FSQRT})
+      setOperationPromotedToType(Opc, VT, MVT::f80);
+    setOperationAction(ISD::FP_ROUND, VT, Custom);
+    setOperationAction(ISD::STRICT_FP_ROUND, VT, Custom);
   }
 
   // f128 uses xmm registers, but most operations require libcalls.
@@ -3679,6 +3705,18 @@ bool X86TargetLowering::ShouldShrinkFPConstant(EVT VT) const {
 bool X86TargetLowering::isScalarFPTypeInSSEReg(EVT VT) const {
   return (VT == MVT::f64 && Subtarget.hasSSE2()) ||
          (VT == MVT::f32 && Subtarget.hasSSE1()) || VT == MVT::f16;
+}
+
+bool X86TargetLowering::isScalarFPTypeInX87Reg(EVT VT) const {
+  if (Subtarget.useSoftFloat() || !Subtarget.hasX87())
+    return false;
+  return VT == MVT::f80 ||
+         ((VT == MVT::f32 || VT == MVT::f64) && !isScalarFPTypeInSSEReg(VT));
+}
+
+bool X86TargetLowering::needsX87RoundToType(EVT VT) const {
+  return X87RoundToType && (VT == MVT::f32 || VT == MVT::f64) &&
+         isScalarFPTypeInX87Reg(VT);
 }
 
 bool X86TargetLowering::isLoadBitCastBeneficial(EVT LoadVT, EVT BitcastVT,
@@ -20543,13 +20581,32 @@ SDValue X86TargetLowering::LowerSINT_TO_FP(SDValue Op,
   return Tmp.first;
 }
 
+std::pair<SDValue, SDValue>
+X86TargetLowering::RoundX87ToType(EVT VT, const SDLoc &DL, SDValue Chain,
+                                  SDValue Src, SelectionDAG &DAG) const {
+  MachineFunction &MF = DAG.getMachineFunction();
+  unsigned Size = VT.getStoreSize();
+  int SSFI = MF.getFrameInfo().CreateStackObject(Size, Align(Size), false);
+  SDValue Slot = DAG.getFrameIndex(SSFI, getPointerTy(DAG.getDataLayout()));
+  MachinePointerInfo PtrInfo = MachinePointerInfo::getFixedStack(MF, SSFI);
+
+  Chain = DAG.getMemIntrinsicNode(X86ISD::FST, DL, DAG.getVTList(MVT::Other),
+                                  {Chain, Src, Slot}, VT, PtrInfo, Align(Size),
+                                  MachineMemOperand::MOStore);
+  SDValue Res = DAG.getLoad(VT, DL, Chain, Slot, PtrInfo, Align(Size));
+  return {Res, Res.getValue(1)};
+}
+
 std::pair<SDValue, SDValue> X86TargetLowering::BuildFILD(
     EVT DstVT, EVT SrcVT, const SDLoc &DL, SDValue Chain, SDValue Pointer,
     MachinePointerInfo PtrInfo, Align Alignment, SelectionDAG &DAG) const {
   // Build the FILD
   SDVTList Tys;
   bool useSSE = isScalarFPTypeInSSEReg(DstVT);
-  if (useSSE)
+  // FILD rounds to the FPU control word's precision, not to DstVT, so an
+  // f32/f64 result has to be rounded down from the full x87 register.
+  bool RoundX87 = needsX87RoundToType(DstVT);
+  if (useSSE || RoundX87)
     Tys = DAG.getVTList(MVT::f80, MVT::Other);
   else
     Tys = DAG.getVTList(DstVT, MVT::Other);
@@ -20560,26 +20617,8 @@ std::pair<SDValue, SDValue> X86TargetLowering::BuildFILD(
                               Alignment, MachineMemOperand::MOLoad);
   Chain = Result.getValue(1);
 
-  if (useSSE) {
-    MachineFunction &MF = DAG.getMachineFunction();
-    unsigned SSFISize = DstVT.getStoreSize();
-    int SSFI =
-        MF.getFrameInfo().CreateStackObject(SSFISize, Align(SSFISize), false);
-    auto PtrVT = getPointerTy(MF.getDataLayout());
-    SDValue StackSlot = DAG.getFrameIndex(SSFI, PtrVT);
-    Tys = DAG.getVTList(MVT::Other);
-    SDValue FSTOps[] = {Chain, Result, StackSlot};
-    MachineMemOperand *StoreMMO = DAG.getMachineFunction().getMachineMemOperand(
-        MachinePointerInfo::getFixedStack(DAG.getMachineFunction(), SSFI),
-        MachineMemOperand::MOStore, SSFISize, Align(SSFISize));
-
-    Chain =
-        DAG.getMemIntrinsicNode(X86ISD::FST, DL, Tys, FSTOps, DstVT, StoreMMO);
-    Result = DAG.getLoad(
-        DstVT, DL, Chain, StackSlot,
-        MachinePointerInfo::getFixedStack(DAG.getMachineFunction(), SSFI));
-    Chain = Result.getValue(1);
-  }
+  if (useSSE || RoundX87)
+    std::tie(Result, Chain) = RoundX87ToType(DstVT, DL, Chain, Result, DAG);
 
   return { Result, Chain };
 }
@@ -22711,6 +22750,19 @@ SDValue X86TargetLowering::LowerFP_ROUND(SDValue Op, SelectionDAG &DAG) const {
 
   if (SVT == MVT::f128 || (VT == MVT::f16 && SVT == MVT::f80))
     return SDValue();
+
+  // An x87 register is 80 bits wide whatever type it nominally holds, so
+  // narrowing between two x87 types is a real rounding step, not a
+  // reinterpretation. Isel would select a bare register copy for it (see the
+  // any_fpround patterns in X86InstrFPStack.td), which drops the rounding, so
+  // force it through a stack slot of the destination width.
+  if (needsX87RoundToType(VT) && isScalarFPTypeInX87Reg(SVT)) {
+    auto [Res, OutChain] = RoundX87ToType(
+        VT, DL, IsStrict ? Chain : DAG.getEntryNode(), In, DAG);
+    if (IsStrict)
+      return DAG.getMergeValues({Res, OutChain}, DL);
+    return Res;
+  }
 
   if (VT == MVT::f16 && (SVT == MVT::f64 || SVT == MVT::f32) &&
       !Subtarget.hasFP16() && (SVT == MVT::f64 || !Subtarget.hasF16C())) {
