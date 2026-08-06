@@ -282,5 +282,55 @@ define float @across_call(float %a, float %b) nounwind {
   ret float %r
 }
 
+; FST rounds on the way to memory, so a store of exactly this width is already
+; the rounding step and no separate round-trip belongs here.
+define void @fadd_only_stored(float %a, float %b, ptr %p) nounwind {
+; ROUND-LABEL: fadd_only_stored:
+; ROUND:       # %bb.0:
+; ROUND-NEXT:    movl {{[0-9]+}}(%esp), %eax
+; ROUND-NEXT:    flds {{[0-9]+}}(%esp)
+; ROUND-NEXT:    fadds {{[0-9]+}}(%esp)
+; ROUND-NEXT:    fstps (%eax)
+; ROUND-NEXT:    retl
+;
+; EXCESS-LABEL: fadd_only_stored:
+; EXCESS:       # %bb.0:
+; EXCESS-NEXT:    movl {{[0-9]+}}(%esp), %eax
+; EXCESS-NEXT:    flds {{[0-9]+}}(%esp)
+; EXCESS-NEXT:    fadds {{[0-9]+}}(%esp)
+; EXCESS-NEXT:    fstps (%eax)
+; EXCESS-NEXT:    retl
+  %r = fadd float %a, %b
+  store float %r, ptr %p
+  ret void
+}
+
+; ... but here the value is live past the store, so the register still has to
+; be rounded: the store rounded only the copy that went to memory.
+define float @fadd_stored_and_used(float %a, float %b, ptr %p) nounwind {
+; ROUND-LABEL: fadd_stored_and_used:
+; ROUND:       # %bb.0:
+; ROUND-NEXT:    pushl %eax
+; ROUND-NEXT:    movl {{[0-9]+}}(%esp), %eax
+; ROUND-NEXT:    flds {{[0-9]+}}(%esp)
+; ROUND-NEXT:    fadds {{[0-9]+}}(%esp)
+; ROUND-NEXT:    fstps (%esp)
+; ROUND-NEXT:    flds (%esp)
+; ROUND-NEXT:    fsts (%eax)
+; ROUND-NEXT:    popl %eax
+; ROUND-NEXT:    retl
+;
+; EXCESS-LABEL: fadd_stored_and_used:
+; EXCESS:       # %bb.0:
+; EXCESS-NEXT:    movl {{[0-9]+}}(%esp), %eax
+; EXCESS-NEXT:    flds {{[0-9]+}}(%esp)
+; EXCESS-NEXT:    fadds {{[0-9]+}}(%esp)
+; EXCESS-NEXT:    fsts (%eax)
+; EXCESS-NEXT:    retl
+  %r = fadd float %a, %b
+  store float %r, ptr %p
+  ret float %r
+}
+
 declare void @clobber()
 declare float @llvm.sqrt.f32(float)

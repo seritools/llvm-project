@@ -22757,6 +22757,15 @@ SDValue X86TargetLowering::LowerFP_ROUND(SDValue Op, SelectionDAG &DAG) const {
   // any_fpround patterns in X86InstrFPStack.td), which drops the rounding, so
   // force it through a stack slot of the destination width.
   if (needsX87RoundToType(VT) && isScalarFPTypeInX87Reg(SVT)) {
+    // Unless every user is a store of exactly VT: FST rounds on the way to
+    // memory, so those stores are already the rounding step and the register
+    // copy isel would pick is fine.
+    if (all_of(Op->users(), [&](SDNode *U) {
+          auto *St = dyn_cast<StoreSDNode>(U);
+          return St && !St->isTruncatingStore() && St->getMemoryVT() == VT;
+        }))
+      return Op;
+
     auto [Res, OutChain] = RoundX87ToType(
         VT, DL, IsStrict ? Chain : DAG.getEntryNode(), In, DAG);
     if (IsStrict)
@@ -54769,6 +54778,21 @@ static SDValue combineStore(SDNode *N, SelectionDAG &DAG,
   SDValue StoredVal = St->getValue();
   EVT VT = StoredVal.getValueType();
   const TargetLowering &TLI = DAG.getTargetLoweringInfo();
+
+  // store (fp_round X) -> truncstore X, when the round only exists to force an
+  // x87 value to its narrower type (see LowerFP_ROUND). FST already rounds on
+  // the way to memory, so the store is the round; going through LowerFP_ROUND's
+  // stack slot first would just be an extra round-trip.
+  if (!St->isTruncatingStore() && VT == StVT &&
+      StoredVal.getOpcode() == ISD::FP_ROUND && StoredVal.hasOneUse()) {
+    const X86TargetLowering &XTLI = *Subtarget.getTargetLowering();
+    EVT SrcVT = StoredVal.getOperand(0).getValueType();
+    if (XTLI.needsX87RoundToType(VT) && XTLI.isScalarFPTypeInX87Reg(SrcVT) &&
+        TLI.isTruncStoreLegal(SrcVT, VT, St->getAlign(),
+                              St->getAddressSpace()))
+      return DAG.getTruncStore(St->getChain(), dl, StoredVal.getOperand(0),
+                               St->getBasePtr(), VT, St->getMemOperand());
+  }
 
   // Pattern: store(trunc(load vXiY) to vXiZ) optimization
   SDValue Src;
