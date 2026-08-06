@@ -275,10 +275,36 @@ the generated code returns 0 with the flag on and 127 with it off. 35 X86 codege
 were regenerated; the sole hand-edit is `GlobalISel/sqrt.mir`, whose hand-written pre-legalized MIR
 only reaches `SQRT_Fp32`/`SQRT_Fp64` under the opt-out and now passes the flag.
 
-**Not done.** `clang` was not built here, so clang's own tests were not run. Wiring
-`-fexcess-precision=standard` to `FEM_Extended` on non-SSE x86 (§5, Option C) is now worth doing as a
-follow-up, as a performance improvement rather than a correctness fix — it moves the rounding points
-from every operation to every assignment.
+**`[X86][clang] Make -fexcess-precision=fast the real x87 opt-out`**
+
+The `UsersManual` already documented the behaviour this fix delivers — *"even on pre-SSE X86 targets
+where `float` and `double` computations must be performed in the 80-bit X87 format, Clang rounds all
+intermediate results correctly for their type"* — so no new spelling was needed for the default; it
+just needed to become true. What did need fixing is that `-fexcess-precision=` had no effect on
+`float`/`double` at all (§3), and that `fast` was documented as an alias for `standard`.
+
+- `standard`, still the default, is what the backend now does: every x87 f32/f64 result rounded to
+  its type.
+- `fast` becomes the opt-out, which is GCC's meaning of the word: let the extended precision escape.
+  It maps to a new `x87-excess-precision` subtarget feature, so it is a per-function property; the
+  `-x86-x87-round-to-type` cl::opt stays as a debugging override.
+
+Two consequences of making the default self-consistent:
+
+- `__FLT_EVAL_METHOD__` is now `0` rather than `2` on x86 without SSE. Reporting `2` while rounding
+  every result to its type was a lie — under `-fexcess-precision=fast` it is `2` again and true.
+- `-ffp-eval-method=source` and `#pragma clang fp eval_method(source)` are accepted there instead of
+  diagnosed (`X86TargetInfo::supportSourceEvalMethod`), since the default already evaluates that way.
+  Still rejected under `-fexcess-precision=fast`.
+
+Note this is a deliberate divergence from GCC on one point: GCC's `-fexcess-precision=standard` means
+"evaluate in `x86_fp80`, round at assignments, `__FLT_EVAL_METHOD__` 2". Both are ISO-conforming, and
+Clang exposes GCC's model as `-ffp-eval-method=extended` — which the backend fix makes *faster* than
+the default on pre-SSE x86, since it rounds once per assignment instead of once per operation. For
+`float f(float a, float b, float c, float d) { return a*b + c*d; }` at `-O2` that is one store/load
+round-trip instead of three.
+
+**Verified.** All 64785 `llvm/test` and 54203 `clang/test` tests pass.
 
 ## 7. Suggested test coverage
 
