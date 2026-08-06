@@ -158,20 +158,18 @@ define dso_local float @div_arcp_by_const(half %x) {
 ;
 ; X86-LABEL: div_arcp_by_const:
 ; X86:       # %bb.0:
-; X86-NEXT:    subl $8, %esp
-; X86-NEXT:    .cfi_def_cfa_offset 12
+; X86-NEXT:    pushl %eax
+; X86-NEXT:    .cfi_def_cfa_offset 8
 ; X86-NEXT:    movzwl {{[0-9]+}}(%esp), %eax
 ; X86-NEXT:    movl %eax, (%esp)
 ; X86-NEXT:    calll __extendhfsf2
 ; X86-NEXT:    fmuls {{\.?LCPI[0-9]+_[0-9]+}}
-; X86-NEXT:    fstps {{[0-9]+}}(%esp)
-; X86-NEXT:    flds {{[0-9]+}}(%esp)
 ; X86-NEXT:    fstps (%esp)
 ; X86-NEXT:    calll __truncsfhf2
 ; X86-NEXT:    movzwl %ax, %eax
 ; X86-NEXT:    movl %eax, (%esp)
 ; X86-NEXT:    calll __extendhfsf2
-; X86-NEXT:    addl $8, %esp
+; X86-NEXT:    popl %eax
 ; X86-NEXT:    .cfi_def_cfa_offset 4
 ; X86-NEXT:    retl
   %rcp = fdiv arcp half %x, 10.0
