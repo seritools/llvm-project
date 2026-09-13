@@ -157,15 +157,15 @@ define i32 @sitofp_i64_double() {
 ; AVX-LABEL: 'sitofp_i64_double'
 ; AVX-NEXT:  Cost Model: Found costs of 1 for: %cvt_i64_f64 = sitofp i64 undef to double
 ; AVX-NEXT:  Cost Model: Found costs of RThru:8 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v2i64_v2f64 = sitofp <2 x i64> undef to <2 x double>
-; AVX-NEXT:  Cost Model: Found costs of RThru:10 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v4i64_v4f64 = sitofp <4 x i64> undef to <4 x double>
-; AVX-NEXT:  Cost Model: Found costs of RThru:20 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v8i64_v8f64 = sitofp <8 x i64> undef to <8 x double>
+; AVX-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v4i64_v4f64 = sitofp <4 x i64> undef to <4 x double>
+; AVX-NEXT:  Cost Model: Found costs of RThru:24 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v8i64_v8f64 = sitofp <8 x i64> undef to <8 x double>
 ; AVX-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512F-LABEL: 'sitofp_i64_double'
 ; AVX512F-NEXT:  Cost Model: Found costs of 1 for: %cvt_i64_f64 = sitofp i64 undef to double
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:8 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v2i64_v2f64 = sitofp <2 x i64> undef to <2 x double>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:10 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v4i64_v4f64 = sitofp <4 x i64> undef to <4 x double>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:22 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v8i64_v8f64 = sitofp <8 x i64> undef to <8 x double>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v4i64_v4f64 = sitofp <4 x i64> undef to <4 x double>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v8i64_v8f64 = sitofp <8 x i64> undef to <8 x double>
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512DQ-LABEL: 'sitofp_i64_double'
@@ -358,8 +358,8 @@ define i32 @sitofp_i64_float() {
 ; AVX512F-NEXT:  Cost Model: Found costs of 1 for: %cvt_i64_f32 = sitofp i64 undef to float
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v2i64_v2f32 = sitofp <2 x i64> undef to <2 x float>
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:8 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v4i64_v4f32 = sitofp <4 x i64> undef to <4 x float>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:22 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v8i64_v8f32 = sitofp <8 x i64> undef to <8 x float>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:45 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v16i64_v16f32 = sitofp <16 x i64> undef to <16 x float>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v8i64_v8f32 = sitofp <8 x i64> undef to <8 x float>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:53 CodeSize:1 Lat:1 SizeLat:1 for: %cvt_v16i64_v16f32 = sitofp <16 x i64> undef to <16 x float>
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512DQ-LABEL: 'sitofp_i64_float'

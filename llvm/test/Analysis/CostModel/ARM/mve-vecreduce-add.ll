@@ -221,9 +221,9 @@ define void @add_i32() {
 
 define void @add_i64() {
 ; CHECK-LABEL: 'add_i64'
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a0za = zext <1 x i8> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a0za = zext <1 x i8> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a0z = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a0za)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a0sa = sext <1 x i8> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a0sa = sext <1 x i8> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a0s = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a0sa)
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a1za = zext <2 x i8> undef to <2 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:108 CodeSize:76 Lat:108 SizeLat:108 for: %a1z = call i64 @llvm.vector.reduce.add.v2i64(<2 x i64> %a1za)
@@ -241,9 +241,9 @@ define void @add_i64() {
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:808 CodeSize:552 Lat:808 SizeLat:808 for: %a4z = call i64 @llvm.vector.reduce.add.v16i64(<16 x i64> %a4za)
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:1322 CodeSize:1 Lat:1 SizeLat:1 for: %a4sa = sext <16 x i8> undef to <16 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:808 CodeSize:552 Lat:808 SizeLat:808 for: %a4s = call i64 @llvm.vector.reduce.add.v16i64(<16 x i64> %a4sa)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a5za = zext <1 x i16> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a5za = zext <1 x i16> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a5z = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a5za)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:36 CodeSize:1 Lat:1 SizeLat:1 for: %a5sa = sext <1 x i16> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:28 CodeSize:1 Lat:1 SizeLat:1 for: %a5sa = sext <1 x i16> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a5s = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a5sa)
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a6za = zext <2 x i16> undef to <2 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:108 CodeSize:76 Lat:108 SizeLat:108 for: %a6z = call i64 @llvm.vector.reduce.add.v2i64(<2 x i64> %a6za)
@@ -261,9 +261,9 @@ define void @add_i64() {
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:808 CodeSize:552 Lat:808 SizeLat:808 for: %a9z = call i64 @llvm.vector.reduce.add.v16i64(<16 x i64> %a9za)
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:1320 CodeSize:1 Lat:1 SizeLat:1 for: %a9sa = sext <16 x i16> undef to <16 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:808 CodeSize:552 Lat:808 SizeLat:808 for: %a9s = call i64 @llvm.vector.reduce.add.v16i64(<16 x i64> %a9sa)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a10za = zext <1 x i32> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a10za = zext <1 x i32> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a10z = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a10za)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a10sa = sext <1 x i32> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a10sa = sext <1 x i32> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a10s = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a10sa)
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a11za = zext <2 x i32> undef to <2 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:108 CodeSize:76 Lat:108 SizeLat:108 for: %a11z = call i64 @llvm.vector.reduce.add.v2i64(<2 x i64> %a11za)
@@ -759,12 +759,12 @@ define void @mla_i32() {
 
 define void @mla_i64() {
 ; CHECK-LABEL: 'mla_i64'
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a0za = zext <1 x i8> undef to <1 x i64>
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a0zb = zext <1 x i8> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a0za = zext <1 x i8> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a0zb = zext <1 x i8> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a0zm = mul <1 x i64> %a0za, %a0zb
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a0z = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a0zm)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a0sa = sext <1 x i8> undef to <1 x i64>
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a0sb = sext <1 x i8> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a0sa = sext <1 x i8> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a0sb = sext <1 x i8> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a0sm = mul <1 x i64> %a0sa, %a0sb
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a0s = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a0sm)
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a1za = zext <2 x i8> undef to <2 x i64>
@@ -799,12 +799,12 @@ define void @mla_i64() {
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:1322 CodeSize:1 Lat:1 SizeLat:1 for: %a4sb = sext <16 x i8> undef to <16 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of 416 for: %a4sm = mul <16 x i64> %a4sa, %a4sb
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:808 CodeSize:552 Lat:808 SizeLat:808 for: %a4s = call i64 @llvm.vector.reduce.add.v16i64(<16 x i64> %a4sm)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a5za = zext <1 x i16> undef to <1 x i64>
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a5zb = zext <1 x i16> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a5za = zext <1 x i16> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a5zb = zext <1 x i16> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a5zm = mul <1 x i64> %a5za, %a5zb
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a5z = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a5zm)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:36 CodeSize:1 Lat:1 SizeLat:1 for: %a5sa = sext <1 x i16> undef to <1 x i64>
-; CHECK-NEXT:  Cost Model: Found costs of RThru:36 CodeSize:1 Lat:1 SizeLat:1 for: %a5sb = sext <1 x i16> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:28 CodeSize:1 Lat:1 SizeLat:1 for: %a5sa = sext <1 x i16> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:28 CodeSize:1 Lat:1 SizeLat:1 for: %a5sb = sext <1 x i16> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a5sm = mul <1 x i64> %a5sa, %a5sb
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a5s = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a5sm)
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a6za = zext <2 x i16> undef to <2 x i64>
@@ -839,12 +839,12 @@ define void @mla_i64() {
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:1320 CodeSize:1 Lat:1 SizeLat:1 for: %a9sb = sext <16 x i16> undef to <16 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of 416 for: %a9sm = mul <16 x i64> %a9sa, %a9sb
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:808 CodeSize:552 Lat:808 SizeLat:808 for: %a9s = call i64 @llvm.vector.reduce.add.v16i64(<16 x i64> %a9sm)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a10za = zext <1 x i32> undef to <1 x i64>
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a10zb = zext <1 x i32> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a10za = zext <1 x i32> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a10zb = zext <1 x i32> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a10zm = mul <1 x i64> %a10za, %a10zb
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a10z = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a10zm)
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a10sa = sext <1 x i32> undef to <1 x i64>
-; CHECK-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %a10sb = sext <1 x i32> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a10sa = sext <1 x i32> undef to <1 x i64>
+; CHECK-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %a10sb = sext <1 x i32> undef to <1 x i64>
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a10sm = mul <1 x i64> %a10sa, %a10sb
 ; CHECK-NEXT:  Cost Model: Found costs of 8 for: %a10s = call i64 @llvm.vector.reduce.add.v1i64(<1 x i64> %a10sm)
 ; CHECK-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:4 SizeLat:4 for: %a11za = zext <2 x i32> undef to <2 x i64>

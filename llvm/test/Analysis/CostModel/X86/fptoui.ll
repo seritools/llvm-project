@@ -13,37 +13,37 @@
 define i32 @fptoui_double_i64(i32 %arg) {
 ; SSE2-LABEL: 'fptoui_double_i64'
 ; SSE2-NEXT:  Cost Model: Found costs of RThru:15 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui double undef to i64
-; SSE2-NEXT:  Cost Model: Found costs of RThru:36 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:72 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:144 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:68 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:136 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
 ; SSE2-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; SSE42-LABEL: 'fptoui_double_i64'
 ; SSE42-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui double undef to i64
-; SSE42-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:24 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:48 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:11 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:22 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:44 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
 ; SSE42-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX1-LABEL: 'fptoui_double_i64'
 ; AVX1-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui double undef to i64
-; AVX1-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
-; AVX1-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
-; AVX1-NEXT:  Cost Model: Found costs of RThru:52 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
+; AVX1-NEXT:  Cost Model: Found costs of RThru:11 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
+; AVX1-NEXT:  Cost Model: Found costs of RThru:24 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
+; AVX1-NEXT:  Cost Model: Found costs of RThru:48 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
 ; AVX1-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX2-LABEL: 'fptoui_double_i64'
 ; AVX2-NEXT:  Cost Model: Found costs of RThru:3 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui double undef to i64
-; AVX2-NEXT:  Cost Model: Found costs of RThru:10 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
-; AVX2-NEXT:  Cost Model: Found costs of RThru:22 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
-; AVX2-NEXT:  Cost Model: Found costs of RThru:44 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
+; AVX2-NEXT:  Cost Model: Found costs of RThru:9 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
+; AVX2-NEXT:  Cost Model: Found costs of RThru:20 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
+; AVX2-NEXT:  Cost Model: Found costs of RThru:40 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
 ; AVX2-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512F-LABEL: 'fptoui_double_i64'
 ; AVX512F-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptoui double undef to i64
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:6 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:30 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512DQ-LABEL: 'fptoui_double_i64'
@@ -55,9 +55,9 @@ define i32 @fptoui_double_i64(i32 %arg) {
 ;
 ; SLM-LABEL: 'fptoui_double_i64'
 ; SLM-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui double undef to i64
-; SLM-NEXT:  Cost Model: Found costs of RThru:18 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:36 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:72 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:11 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x double> undef to <2 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:22 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x double> undef to <4 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:44 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x double> undef to <8 x i64>
 ; SLM-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
   %I64 = fptoui double undef to i64
@@ -206,42 +206,42 @@ define i32 @fptoui_double_i8(i32 %arg) {
 define i32 @fptoui_float_i64(i32 %arg) {
 ; SSE2-LABEL: 'fptoui_float_i64'
 ; SSE2-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui float undef to i64
-; SSE2-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:29 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:58 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:116 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:25 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:50 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:100 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
 ; SSE2-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; SSE42-LABEL: 'fptoui_float_i64'
 ; SSE42-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui float undef to i64
-; SSE42-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:25 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:50 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:100 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:11 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:23 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:46 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:92 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
 ; SSE42-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX1-LABEL: 'fptoui_float_i64'
 ; AVX1-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui float undef to i64
-; AVX1-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
-; AVX1-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
-; AVX1-NEXT:  Cost Model: Found costs of RThru:53 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
-; AVX1-NEXT:  Cost Model: Found costs of RThru:106 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
+; AVX1-NEXT:  Cost Model: Found costs of RThru:11 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
+; AVX1-NEXT:  Cost Model: Found costs of RThru:24 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
+; AVX1-NEXT:  Cost Model: Found costs of RThru:49 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
+; AVX1-NEXT:  Cost Model: Found costs of RThru:98 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
 ; AVX1-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX2-LABEL: 'fptoui_float_i64'
 ; AVX2-NEXT:  Cost Model: Found costs of RThru:3 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui float undef to i64
-; AVX2-NEXT:  Cost Model: Found costs of RThru:10 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
-; AVX2-NEXT:  Cost Model: Found costs of RThru:22 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
-; AVX2-NEXT:  Cost Model: Found costs of RThru:45 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
-; AVX2-NEXT:  Cost Model: Found costs of RThru:90 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
+; AVX2-NEXT:  Cost Model: Found costs of RThru:9 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
+; AVX2-NEXT:  Cost Model: Found costs of RThru:20 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
+; AVX2-NEXT:  Cost Model: Found costs of RThru:41 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
+; AVX2-NEXT:  Cost Model: Found costs of RThru:82 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
 ; AVX2-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512F-LABEL: 'fptoui_float_i64'
 ; AVX512F-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptoui float undef to i64
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:6 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:30 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:61 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:53 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512DQ-LABEL: 'fptoui_float_i64'
@@ -254,10 +254,10 @@ define i32 @fptoui_float_i64(i32 %arg) {
 ;
 ; SLM-LABEL: 'fptoui_float_i64'
 ; SLM-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptoui float undef to i64
-; SLM-NEXT:  Cost Model: Found costs of RThru:18 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:37 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:74 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:148 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:11 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptoui <2 x float> undef to <2 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:23 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptoui <4 x float> undef to <4 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:46 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptoui <8 x float> undef to <8 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:92 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptoui <16 x float> undef to <16 x i64>
 ; SLM-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
   %I64 = fptoui float undef to i64

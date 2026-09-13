@@ -13,30 +13,30 @@
 define i32 @fptosi_double_i64(i32 %arg) {
 ; SSE2-LABEL: 'fptosi_double_i64'
 ; SSE2-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptosi double undef to i64
-; SSE2-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:28 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:56 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:24 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:48 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
 ; SSE2-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; SSE42-LABEL: 'fptosi_double_i64'
 ; SSE42-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptosi double undef to i64
-; SSE42-NEXT:  Cost Model: Found costs of RThru:6 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:24 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:10 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:20 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
 ; SSE42-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX-LABEL: 'fptosi_double_i64'
 ; AVX-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptosi double undef to i64
-; AVX-NEXT:  Cost Model: Found costs of RThru:6 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
-; AVX-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
-; AVX-NEXT:  Cost Model: Found costs of RThru:28 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
+; AVX-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
+; AVX-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
+; AVX-NEXT:  Cost Model: Found costs of RThru:24 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
 ; AVX-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512F-LABEL: 'fptosi_double_i64'
 ; AVX512F-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptosi double undef to i64
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:6 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:30 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512DQ-LABEL: 'fptosi_double_i64'
@@ -48,9 +48,9 @@ define i32 @fptosi_double_i64(i32 %arg) {
 ;
 ; SLM-LABEL: 'fptosi_double_i64'
 ; SLM-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptosi double undef to i64
-; SLM-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:24 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:48 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x double> undef to <2 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:10 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x double> undef to <4 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:20 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x double> undef to <8 x i64>
 ; SLM-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
   %I64 = fptosi double undef to i64
@@ -199,34 +199,34 @@ define i32 @fptosi_double_i8(i32 %arg) {
 define i32 @fptosi_float_i64(i32 %arg) {
 ; SSE2-LABEL: 'fptosi_float_i64'
 ; SSE2-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:1 Lat:1 SizeLat:1 for: %I64 = fptosi float undef to i64
-; SSE2-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:29 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:58 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
-; SSE2-NEXT:  Cost Model: Found costs of RThru:116 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:25 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:50 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
+; SSE2-NEXT:  Cost Model: Found costs of RThru:100 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
 ; SSE2-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; SSE42-LABEL: 'fptosi_float_i64'
 ; SSE42-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptosi float undef to i64
-; SSE42-NEXT:  Cost Model: Found costs of RThru:6 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:13 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
-; SSE42-NEXT:  Cost Model: Found costs of RThru:52 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:11 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:22 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
+; SSE42-NEXT:  Cost Model: Found costs of RThru:44 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
 ; SSE42-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX-LABEL: 'fptosi_float_i64'
 ; AVX-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptosi float undef to i64
-; AVX-NEXT:  Cost Model: Found costs of RThru:6 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
-; AVX-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
-; AVX-NEXT:  Cost Model: Found costs of RThru:29 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
-; AVX-NEXT:  Cost Model: Found costs of RThru:58 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
+; AVX-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
+; AVX-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
+; AVX-NEXT:  Cost Model: Found costs of RThru:25 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
+; AVX-NEXT:  Cost Model: Found costs of RThru:50 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
 ; AVX-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512F-LABEL: 'fptosi_float_i64'
 ; AVX512F-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptosi float undef to i64
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:6 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:14 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:30 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
-; AVX512F-NEXT:  Cost Model: Found costs of RThru:61 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:26 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
+; AVX512F-NEXT:  Cost Model: Found costs of RThru:53 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
 ; AVX512F-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
 ; AVX512DQ-LABEL: 'fptosi_float_i64'
@@ -239,10 +239,10 @@ define i32 @fptosi_float_i64(i32 %arg) {
 ;
 ; SLM-LABEL: 'fptosi_float_i64'
 ; SLM-NEXT:  Cost Model: Found costs of 1 for: %I64 = fptosi float undef to i64
-; SLM-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:25 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:50 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
-; SLM-NEXT:  Cost Model: Found costs of RThru:100 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:5 CodeSize:1 Lat:1 SizeLat:1 for: %V2I64 = fptosi <2 x float> undef to <2 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:11 CodeSize:1 Lat:1 SizeLat:1 for: %V4I64 = fptosi <4 x float> undef to <4 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:22 CodeSize:1 Lat:1 SizeLat:1 for: %V8I64 = fptosi <8 x float> undef to <8 x i64>
+; SLM-NEXT:  Cost Model: Found costs of RThru:44 CodeSize:1 Lat:1 SizeLat:1 for: %V16I64 = fptosi <16 x float> undef to <16 x i64>
 ; SLM-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret i32 undef
 ;
   %I64 = fptosi float undef to i64
