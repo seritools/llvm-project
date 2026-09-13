@@ -1138,13 +1138,24 @@ public:
     // integer operations.
     InstructionCost OpCost = (IsFloat ? 2 : 1);
 
-    if (TLI->isOperationLegalOrPromote(ISD, LT.second)) {
+    // A vector whose element type had to be expanded legalizes all the way to
+    // a scalar type. The operation is then done piecewise on scalars, so the
+    // legality of LT.second says nothing about the vector form: fall through
+    // to the scalarization estimate, which accounts for the traffic. A vector
+    // of one legal element also legalizes to a scalar, but that is just the
+    // scalar in a register and is handled fine by the checks below.
+    bool ScalarizedVector =
+        Ty->isVectorTy() && !LT.second.isVector() &&
+        LT.second.getSizeInBits() <
+            thisT()->getDataLayout().getTypeSizeInBits(Ty->getScalarType());
+
+    if (!ScalarizedVector && TLI->isOperationLegalOrPromote(ISD, LT.second)) {
       // The operation is legal. Assume it costs 1.
       // TODO: Once we have extract/insert subvector cost we need to use them.
       return LT.first * OpCost;
     }
 
-    if (!TLI->isOperationExpand(ISD, LT.second)) {
+    if (!ScalarizedVector && !TLI->isOperationExpand(ISD, LT.second)) {
       // If the operation is custom lowered, then assume that the code is twice
       // as expensive.
       return LT.first * 2 * OpCost;

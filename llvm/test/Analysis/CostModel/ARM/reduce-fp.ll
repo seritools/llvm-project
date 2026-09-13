@@ -70,7 +70,7 @@ define void @fadd_unordered() {
 ; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:8 CodeSize:4 Lat:12 SizeLat:4 for: %fadd_v8f32 = call reassoc float @llvm.vector.reduce.fadd.v8f32(float 0.000000e+00, <8 x float> undef)
 ; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:6 SizeLat:2 for: %fadd_v2f64 = call reassoc double @llvm.vector.reduce.fadd.v2f64(double 0.000000e+00, <2 x double> undef)
 ; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:3 Lat:9 SizeLat:3 for: %fadd_v4f64 = call reassoc double @llvm.vector.reduce.fadd.v4f64(double 0.000000e+00, <4 x double> undef)
-; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:52 CodeSize:30 Lat:34 SizeLat:30 for: %fadd_v4f128 = call reassoc fp128 @llvm.vector.reduce.fadd.v4f128(fp128 undef, <4 x fp128> undef)
+; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:76 CodeSize:30 Lat:34 SizeLat:30 for: %fadd_v4f128 = call reassoc fp128 @llvm.vector.reduce.fadd.v4f128(fp128 undef, <4 x fp128> undef)
 ; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret void
 ;
 ; CHECK-MVEFP-LABEL: 'fadd_unordered'
@@ -177,7 +177,7 @@ define void @fmul_unordered() {
 ; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:8 CodeSize:4 Lat:12 SizeLat:4 for: %fmul_v8f32 = call reassoc float @llvm.vector.reduce.fmul.v8f32(float 0.000000e+00, <8 x float> undef)
 ; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:4 CodeSize:2 Lat:6 SizeLat:2 for: %fmul_v2f64 = call reassoc double @llvm.vector.reduce.fmul.v2f64(double 0.000000e+00, <2 x double> undef)
 ; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:12 CodeSize:3 Lat:9 SizeLat:3 for: %fmul_v4f64 = call reassoc double @llvm.vector.reduce.fmul.v4f64(double 0.000000e+00, <4 x double> undef)
-; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:52 CodeSize:30 Lat:34 SizeLat:30 for: %fmul_v4f128 = call reassoc fp128 @llvm.vector.reduce.fmul.v4f128(fp128 undef, <4 x fp128> undef)
+; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:76 CodeSize:30 Lat:34 SizeLat:30 for: %fmul_v4f128 = call reassoc fp128 @llvm.vector.reduce.fmul.v4f128(fp128 undef, <4 x fp128> undef)
 ; CHECK-V8-NEXT:  Cost Model: Found costs of RThru:0 CodeSize:1 Lat:1 SizeLat:1 for: ret void
 ;
 ; CHECK-MVEFP-LABEL: 'fmul_unordered'
