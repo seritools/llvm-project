@@ -946,18 +946,38 @@ public:
 
     InstructionCost Cost = 0;
 
+    // An element the legalizer has to expand is held in several registers and
+    // each part moves separately. getVectorInstrCost() looks at one instruction
+    // in isolation and cannot tell whether the vector is in vector registers,
+    // so it reports such moves as free. Here we know it is being scalarized.
+    unsigned PiecesPerElt = 1;
+    if (Type *EltTy = Ty->getScalarType(); EltTy->isIntegerTy()) {
+      std::pair<InstructionCost, MVT> LT = thisT()->getTypeLegalizationCost(Ty);
+      unsigned EltBits = thisT()->getDataLayout().getTypeSizeInBits(EltTy);
+      unsigned LegalBits = LT.second.getSizeInBits();
+      if (!LT.second.isVector() && LegalBits && LegalBits < EltBits)
+        PiecesPerElt = divideCeil(EltBits, LegalBits);
+    }
+
     for (int i = 0, e = Ty->getNumElements(); i < e; ++i) {
       if (!DemandedElts[i])
         continue;
+      auto AtLeastPieces = [&](InstructionCost C) {
+        if (PiecesPerElt > 1 && C.isValid() &&
+            C < InstructionCost(PiecesPerElt))
+          return InstructionCost(PiecesPerElt);
+        return C;
+      };
       if (Insert) {
         Value *InsertedVal = VL.empty() ? nullptr : VL[i];
-        Cost +=
-            thisT()->getVectorInstrCost(Instruction::InsertElement, Ty,
-                                        CostKind, i, nullptr, InsertedVal, VIC);
+        Cost += AtLeastPieces(thisT()->getVectorInstrCost(
+            Instruction::InsertElement, Ty, CostKind, i, nullptr, InsertedVal,
+            VIC));
       }
       if (Extract)
-        Cost += thisT()->getVectorInstrCost(Instruction::ExtractElement, Ty,
-                                            CostKind, i, nullptr, nullptr, VIC);
+        Cost += AtLeastPieces(
+            thisT()->getVectorInstrCost(Instruction::ExtractElement, Ty,
+                                        CostKind, i, nullptr, nullptr, VIC));
     }
 
     return Cost;

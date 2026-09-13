@@ -451,9 +451,9 @@ define i32 @smul(i32 %arg) {
 ;
 ; NEON-LABEL: 'smul'
 ; NEON-NEXT:  Cost Model: Found costs of 4 for: %I64 = call { i64, i1 } @llvm.smul.with.overflow.i64(i64 undef, i64 undef)
-; NEON-NEXT:  Cost Model: Found costs of RThru:83 CodeSize:12 Lat:12 SizeLat:12 for: %V2I64 = call { <2 x i64>, <2 x i1> } @llvm.smul.with.overflow.v2i64(<2 x i64> undef, <2 x i64> undef)
-; NEON-NEXT:  Cost Model: Found costs of RThru:162 CodeSize:13 Lat:13 SizeLat:13 for: %V4I64 = call { <4 x i64>, <4 x i1> } @llvm.smul.with.overflow.v4i64(<4 x i64> undef, <4 x i64> undef)
-; NEON-NEXT:  Cost Model: Found costs of RThru:320 CodeSize:15 Lat:15 SizeLat:15 for: %V8I64 = call { <8 x i64>, <8 x i1> } @llvm.smul.with.overflow.v8i64(<8 x i64> undef, <8 x i64> undef)
+; NEON-NEXT:  Cost Model: Found costs of RThru:91 CodeSize:12 Lat:12 SizeLat:12 for: %V2I64 = call { <2 x i64>, <2 x i1> } @llvm.smul.with.overflow.v2i64(<2 x i64> undef, <2 x i64> undef)
+; NEON-NEXT:  Cost Model: Found costs of RThru:178 CodeSize:13 Lat:13 SizeLat:13 for: %V4I64 = call { <4 x i64>, <4 x i1> } @llvm.smul.with.overflow.v4i64(<4 x i64> undef, <4 x i64> undef)
+; NEON-NEXT:  Cost Model: Found costs of RThru:352 CodeSize:15 Lat:15 SizeLat:15 for: %V8I64 = call { <8 x i64>, <8 x i1> } @llvm.smul.with.overflow.v8i64(<8 x i64> undef, <8 x i64> undef)
 ; NEON-NEXT:  Cost Model: Found costs of 2 for: %I32 = call { i32, i1 } @llvm.smul.with.overflow.i32(i32 undef, i32 undef)
 ; NEON-NEXT:  Cost Model: Found costs of RThru:21 CodeSize:10 Lat:10 SizeLat:10 for: %V4I32 = call { <4 x i32>, <4 x i1> } @llvm.smul.with.overflow.v4i32(<4 x i32> undef, <4 x i32> undef)
 ; NEON-NEXT:  Cost Model: Found costs of RThru:38 CodeSize:11 Lat:11 SizeLat:11 for: %V8I32 = call { <8 x i32>, <8 x i1> } @llvm.smul.with.overflow.v8i32(<8 x i32> undef, <8 x i32> undef)
@@ -552,9 +552,9 @@ define i32 @umul(i32 %arg) {
 ;
 ; NEON-LABEL: 'umul'
 ; NEON-NEXT:  Cost Model: Found costs of 4 for: %I64 = call { i64, i1 } @llvm.umul.with.overflow.i64(i64 undef, i64 undef)
-; NEON-NEXT:  Cost Model: Found costs of RThru:77 CodeSize:7 Lat:7 SizeLat:7 for: %V2I64 = call { <2 x i64>, <2 x i1> } @llvm.umul.with.overflow.v2i64(<2 x i64> undef, <2 x i64> undef)
-; NEON-NEXT:  Cost Model: Found costs of RThru:154 CodeSize:8 Lat:8 SizeLat:8 for: %V4I64 = call { <4 x i64>, <4 x i1> } @llvm.umul.with.overflow.v4i64(<4 x i64> undef, <4 x i64> undef)
-; NEON-NEXT:  Cost Model: Found costs of RThru:308 CodeSize:10 Lat:10 SizeLat:10 for: %V8I64 = call { <8 x i64>, <8 x i1> } @llvm.umul.with.overflow.v8i64(<8 x i64> undef, <8 x i64> undef)
+; NEON-NEXT:  Cost Model: Found costs of RThru:85 CodeSize:7 Lat:7 SizeLat:7 for: %V2I64 = call { <2 x i64>, <2 x i1> } @llvm.umul.with.overflow.v2i64(<2 x i64> undef, <2 x i64> undef)
+; NEON-NEXT:  Cost Model: Found costs of RThru:170 CodeSize:8 Lat:8 SizeLat:8 for: %V4I64 = call { <4 x i64>, <4 x i1> } @llvm.umul.with.overflow.v4i64(<4 x i64> undef, <4 x i64> undef)
+; NEON-NEXT:  Cost Model: Found costs of RThru:340 CodeSize:10 Lat:10 SizeLat:10 for: %V8I64 = call { <8 x i64>, <8 x i1> } @llvm.umul.with.overflow.v8i64(<8 x i64> undef, <8 x i64> undef)
 ; NEON-NEXT:  Cost Model: Found costs of 2 for: %I32 = call { i32, i1 } @llvm.umul.with.overflow.i32(i32 undef, i32 undef)
 ; NEON-NEXT:  Cost Model: Found costs of RThru:19 CodeSize:9 Lat:9 SizeLat:9 for: %V4I32 = call { <4 x i32>, <4 x i1> } @llvm.umul.with.overflow.v4i32(<4 x i32> undef, <4 x i32> undef)
 ; NEON-NEXT:  Cost Model: Found costs of RThru:34 CodeSize:10 Lat:10 SizeLat:10 for: %V8I32 = call { <8 x i32>, <8 x i1> } @llvm.umul.with.overflow.v8i32(<8 x i32> undef, <8 x i32> undef)
